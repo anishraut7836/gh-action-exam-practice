@@ -1,20 +1,30 @@
-name: Java CI with Maven
- 
-env:
-  NAME: 'My Action'
- 
+name: my_color_workflow
 on:
-  push:
-    branches: [ "main" ]
- 
+  workflow_dispatch:
+env:
+  favorite_color: orange
 jobs:
-  build:
-    env:
-      NAME: 'My Action 2'
- 
+  my_color_1:
     runs-on: ubuntu-latest
- 
-    - name: Print name
-      run: echo "$NAME"
-      env:
-        NAME: 'My Action 3'
+    env:
+      favorite_color: blue
+    steps:
+      - name: Set the color
+        id: step_one
+        env:
+          favorite_color: green
+        run: |
+          echo "my_color=$favorite_color" >> "$GITHUB_ENV"
+      - name: echo the color
+        id: step_two
+        run: |
+          echo "🎉 My color is ${{ env.my_color }}"
+          echo "🎉 My favorite color is ${{ env.favorite_color }}"
+  my_color_2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo the color
+        id: step_one
+        run: |
+          echo "🎉 My color is ${{ env.my_color }}"
+          echo "🎉 My favorite color is ${{ env.favorite_color }}"
